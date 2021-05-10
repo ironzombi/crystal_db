@@ -3,10 +3,10 @@ require "sqlite3"
 def create_database(tname, dname, pfield)
     DB.open "sqlite3://./data.db" do |db|
         db.exec "create table #{tname} (#{dname} text, #{pfield} integer)"
-        db.exec "insert into #{tname} values (?, ?)", "John Doe", 30
+        db.exec "insert into #{tname} values (?, ?)", "Terry Bogard", 30
     
         args = [] of DB::Any
-        args << "Sarah"
+        args << "Alice"
         args << 33
         db.exec "insert into #{tname} values (?, ?)", args: args
     
@@ -16,11 +16,10 @@ def create_database(tname, dname, pfield)
         puts "#{tname}:"
         db.query "select #{dname}, #{pfield} from #{tname} order by #{pfield} desc" do |rs|
         puts "#{rs.column_name(0)} (#{rs.column_name(1)})"
-        # => name (age)
+
         rs.each do
             puts "#{rs.read(String)} (#{rs.read(Int32)})"
-            # => Sarah (33)
-            # => John Doe (30)
+     
         end
         end
     end
@@ -30,11 +29,10 @@ def read_db(tname, dname, pfield)
     DB.open "sqlite3://./data.db" do |db|
         db.query  "select #{dname}, #{pfield} from #{tname} order by #{pfield} desc" do |rs|
             puts "#{rs.column_name(0)} (#{rs.column_name(1)})"
-        # => name (age)
+
         rs.each do
             puts "#{rs.read(String)} (#{rs.read(Int32)})"
-            # => Sarah (33)
-            # => John Doe (30)
+
         end
         end
     end
