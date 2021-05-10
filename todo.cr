@@ -1,6 +1,23 @@
 require "sqlite3"
 require "option_parser"
 
+OptionParser.parse do |parser|
+    parser.banner = "Usage: <exec> table-name field1 field2"
+    parser.on("-t table_name", "-table=table_name", "specifies table_name") { |table_name| tname = table_name }
+    parser.on("-f field_name", "-field=field_name", "specifies field_name") { |field_name| dname = field_name }
+    parser.on("-i id_field", "-id=id_field", "specifies id_field") { |id_field| pfield = id_field }
+    parser.on("-h", "-help", "Show this help message") do 
+        puts parser 
+        exit
+    end
+
+    parser.invalid_option do |flag|
+    STDERR.puts "ERROR: #{flag} invalid option"
+    STDERR.puts parser 
+    exit(1)
+    end
+end
+
 def create_database(tname, dname, pfield)
     DB.open "sqlite3://./data.db" do |db|
         db.exec "create table #{tname} (#{dname} text, #{pfield} integer)"
@@ -24,11 +41,10 @@ def read_db(tname, dname, pfield)
     DB.open "sqlite3://./data.db" do |db|
         db.query  "select #{dname}, #{pfield} from #{tname} order by #{pfield} desc" do |rs|
             puts "#{rs.column_name(0)} (#{rs.column_name(1)})"
-        # => name (age)
+        
         rs.each do
             puts "#{rs.read(String)} (#{rs.read(Int32)})"
-            # => Sarah (33)
-            # => John Doe (30)
+           
         end
         end
     end
