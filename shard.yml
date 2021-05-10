@@ -1,0 +1,8 @@
+name: Learn
+version: 0.1.0
+
+# authors:
+#   - ironzombi <span@ironzombi.com>
+dependencies:
+    sqlite3:
+          github: crystal-lang/crystal-sqlite3
