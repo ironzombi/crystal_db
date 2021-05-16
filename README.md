@@ -9,7 +9,7 @@
 
 1. todo.cr
   1. create the Database
-  2. read from the Database
+  1. read from the Database
 1. read.cr
   1. read from the database
 
